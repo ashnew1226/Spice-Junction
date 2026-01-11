@@ -53,6 +53,12 @@
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
+                    {% if user.is_authenticated %}
+                    <p class="text-success">Welcome, {{ user.username }}</p>
+                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                {% else %}
+                    <!-- LOGIN FORM HERE -->
+                {% endif %}
                 <a class="btn btn-outline-dark position-relative">
                     <i class="fas fa-shopping-cart"></i>
                     <span id="cartCount"
@@ -205,18 +211,45 @@
 
     <!-- Offer Start -->
     <div class="offer container-fluid my-5 py-5 text-center position-relative overlay-top overlay-bottom">
-        <div class="container py-5">
-            <h1 class="display-3 text-primary mt-3">50% OFF</h1>
-            <h1 class="text-white mb-3">Sunday Special Offer</h1>
-            <h4 class="text-white font-weight-normal mb-4 pb-3">Only for Sunday from 1st Jan to 30th Jan 2045</h4>
-            <form class="form-inline justify-content-center mb-4">
-                <div class="input-group">
-                    <input type="text" class="form-control p-4" placeholder="Your Email" style="height: 60px;">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary font-weight-bold px-4" type="submit">Sign Up</button>
-                    </div>
+        <div class="container col-md-6 py-5">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
                 </div>
+            {% endfor %}
+            {% endif %}
+
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label custom-white">Email address</label>
+                    <input type="text"
+                        name="username"
+                        class="form-control"
+                        placeholder="Enter username or email"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label custom-white">Password</label>
+                    <input type="password"
+                        name="password"
+                        class="form-control"
+                        placeholder="Password"
+                        required>
+                </div>
+
+                <button type="submit" class="btn btn-primary font-weight-bold px-4">
+                    Login
+                </button>
+                <div class="input-group-append">
+                        <a href="{% url 'register' %}" class="btn btn-primary font-weight-bold px-4">Sign Up</a>
+                    </div>
             </form>
+
         </div>
     </div>
     <!-- Offer End -->

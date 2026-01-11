@@ -3,6 +3,9 @@ from .models import Food, Review, Category
 from .forms import ReviewForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def home(request):
     popular_dishes = Food.objects.filter(is_popular=True)
@@ -35,6 +38,47 @@ def add_review(request):
             'created_at': review.created_at.strftime('%d %b %Y')
         })
     return JsonResponse({'success': False, 'errors': form.errors})
+
+def custom_login(request):
+    if request.method == 'POST':
+        identifier = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=identifier, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # home page
+        else:
+            messages.error(request, 'Invalid credentials')
+
+    return redirect('/')
+
+def custom_logout(request):
+    logout(request)
+    return redirect('/')
+
+def register_user(request):
+    if request.method == 'POST':
+        identifier = request.POST.get('identifier')  # email or phone
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match')
+            return redirect('/')
+
+        if User.objects.filter(username=identifier).exists():
+            messages.error(request, 'Account already exists')
+            return redirect('/')
+
+        User.objects.create_user(
+            username=identifier,   # email OR phone
+            password=password
+        )
+
+        messages.success(request, 'Account created successfully. Please login.')
+        return redirect('/')
+
+    return render(request, 'restaurant/register.html')
 
 def menu_page(request):
     foods = Food.objects.all()
