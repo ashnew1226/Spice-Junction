@@ -245,6 +245,10 @@
                 <button type="submit" class="btn btn-primary font-weight-bold px-4">
                     Login
                 </button>
+                {% load socialaccount %}
+<a href="{% provider_login_url 'google' %}">
+  Continue with Google
+</a>
                 <div class="input-group-append">
                         <a href="{% url 'register' %}" class="btn btn-primary font-weight-bold px-4">Sign Up</a>
                     </div>
