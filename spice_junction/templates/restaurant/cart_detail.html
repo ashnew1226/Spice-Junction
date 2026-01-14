@@ -1,0 +1,10 @@
+<h2>Your Cart</h2>
+
+{% for item in items %}
+  <p>
+    {{ item.food.name }} -
+    ₹{{ item.food.price }} × {{ item.quantity }}
+  </p>
+{% empty %}
+  <p>Your cart is empty.</p>
+{% endfor %}

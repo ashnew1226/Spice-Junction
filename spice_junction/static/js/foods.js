@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   buttons.forEach(btn => {
     btn.addEventListener("click", function () {
 
-      /* 🔥 ACTIVE BUTTON HIGHLIGHT */
+      /* ACTIVE BUTTON HIGHLIGHT */
       buttons.forEach(b => b.classList.remove("active"));
       this.classList.add("active");
 
@@ -91,6 +91,45 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ✅ AUTO LOAD FIRST CATEGORY */
   if (buttons.length > 0) {
     buttons[0].click();
+  }
+
+});
+/* js for adding cart */ 
+document.addEventListener("click", function (e) {
+
+  if (e.target.classList.contains("add-to-cart-btn")) {
+
+    const foodId = e.target.dataset.foodId;
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      .getAttribute("content");
+
+    fetch("/ajax/add-to-cart/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `food_id=${foodId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+
+      if (data.success) {
+        const btn = e.target;
+        btn.innerText = "Added ✓";
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-secondary");
+
+        setTimeout(() => {
+          btn.innerText = "Add to Cart";
+          btn.classList.remove("btn-secondary");
+          btn.classList.add("btn-success");
+        }, 1000);
+      }
+
+    })
+    .catch(error => console.error("Cart error:", error));
   }
 
 });

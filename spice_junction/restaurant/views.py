@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
-from .models import Food, Review, Category
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Food, Review, Category, Cart, CartItem
 from .forms import ReviewForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     popular_dishes = Food.objects.filter(is_popular=True)
@@ -25,6 +26,7 @@ def home(request):
         'form': form,
         'categories': categories
     })
+
 @require_POST
 def add_review(request):
     form = ReviewForm(request.POST)
@@ -102,27 +104,46 @@ def foods_by_category(request, category_id):
 
     return JsonResponse({'foods': data})
 
-@require_POST
-def add_to_cart(request):
-    food_id = str(request.POST.get('food_id'))
+def get_user_cart(user):
+    print(f"user - {user}")
+    cart, created = Cart.objects.get_or_create(user=user)
+    return cart
 
-    cart = request.session.get('cart', {})
+@login_required
+def ajax_add_to_cart(request):
+    if request.method == "POST":
+        food_id = request.POST.get("food_id")
 
-    if food_id in cart:
-        cart[food_id]['quantity'] += 1
-    else:
-        food = Food.objects.get(id=food_id)
-        cart[food_id] = {
-            'name': food.name,
-            'price': str(food.price),
-            'quantity': 1,
-            'image': food.image.url
-        }
+        food = get_object_or_404(Food, id=food_id)
+        cart = get_user_cart(request.user)
 
-    request.session['cart'] = cart
-    request.session.modified = True
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart,
+            food=food
+        )
+
+        if not created:
+            cart_item.quantity += 1
+        cart_item.save()
+
+        return JsonResponse({
+            "success": True,
+            "food_id": food.id,
+            "quantity": cart_item.quantity
+        })
 
     return JsonResponse({
-        'success': True,
-        'cart_count': sum(item['quantity'] for item in cart.values())
+        "success": True,
+        "cart_count": cart.items.count()
+        })
+
+
+@login_required
+def cart_detail(request):
+    cart = Cart.objects.filter(user=request.user).first()
+    items = cart.items.all() if cart else []
+
+    return render(request, 'restaurant/cart_detail.html', {
+        'cart': cart,
+        'items': items
     })
