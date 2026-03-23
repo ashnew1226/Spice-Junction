@@ -85,10 +85,7 @@ def register_user(request):
 def menu_page(request):
     foods = Food.objects.all()
     categories = Category.objects.all()
-    return render(request, 'restaurant/menu.html', {
-        'foods': foods,
-        'categories': categories
-    })
+    return render(request, 'restaurant/menu.html', {'categories': categories})
 
 def foods_by_category(request, category_id):
     foods = Food.objects.filter(category_id=category_id)
