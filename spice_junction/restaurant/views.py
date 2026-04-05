@@ -12,6 +12,15 @@ def home(request):
     popular_dishes = Food.objects.filter(is_popular=True)
     reviews = Review.objects.order_by('-created_at')
     categories = Category.objects.all()
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart = get_user_cart(request.user)
+        cart_count = sum(item.quantity for item in cart.items.all())   
+        name = request.user.username.split("@")[0]
+    else:
+        cart = None
+        cart_count = 0
+        name = None
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -24,7 +33,9 @@ def home(request):
         'popular_dishes': popular_dishes,
         'reviews': reviews,
         'form': form,
-        'categories': categories
+        'categories': categories,
+        'cart_count':cart_count,
+        'name':name
     })
 
 @require_POST
@@ -122,16 +133,18 @@ def ajax_add_to_cart(request):
         if not created:
             cart_item.quantity += 1
         cart_item.save()
-
+        cart_count = sum(item.quantity for item in cart.items.all())
+        print(f"cart ---{cart_count}")
         return JsonResponse({
             "success": True,
             "food_id": food.id,
-            "quantity": cart_item.quantity
+            "quantity": cart_item.quantity,
+            "cart_count":cart_count
         })
 
     return JsonResponse({
         "success": True,
-        "cart_count": cart.items.count()
+        "cart_count": cart_count
         })
 
 
@@ -139,8 +152,9 @@ def ajax_add_to_cart(request):
 def cart_detail(request):
     cart = Cart.objects.filter(user=request.user).first()
     items = cart.items.all() if cart else []
-
+    name = request.user.username.split("@")[0]
     return render(request, 'restaurant/cart_detail.html', {
         'cart': cart,
-        'items': items
+        'items': items,
+        'name':name
     })

@@ -44,17 +44,10 @@
                     <a href="#about" class="nav-item nav-link">About</a>
                     <a href="#service" class="nav-item nav-link">Service</a>
                     <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu text-capitalize">
-                            <a href="reservation.html" class="dropdown-item">Reservation</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        </div>
-                    </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
                     {% if user.is_authenticated %}
-                    <p class="text-success">Welcome, {{ user.username }}</p>
+                    <p class="text-success" style="margin: 0px 5px 0px 0px;">Welcome, {{ name }}</p>
                     <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
                 {% else %}
                     <!-- LOGIN FORM HERE -->
@@ -63,7 +56,7 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span id="cartCount"
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    0
+                    {{cart_count}}
                     </span>
                 </a>
             </div>
@@ -114,8 +107,8 @@
             <div class="row">
                 <div class="col-lg-4 py-0 py-lg-5">
                     <h1 class="mb-3">Our Story</h1>
-                    <h5 class="mb-3">Eos kasd eos dolor vero vero, lorem stet diam rebum. Ipsum amet sed vero dolor sea</h5>
-                    <p>Takimata sed vero vero no sit sed, justo clita duo no duo amet et, nonumy kasd sed dolor eos diam lorem eirmod. Amet sit amet amet no. Est nonumy sed labore eirmod sit magna. Erat at est justo sit ut. Labor diam sed ipsum et eirmod</p>
+                    <h5 class="mb-3">The aim of building a modern and user-friendly online food ordering platform</h5>
+                    <p>From freshly prepared vegetarian dishes to delicious non-vegetarian delights and refreshing beverages, every item on our menu is crafted with care and quality ingredients. We believe that food is not just about taste, but about experience, comfort, and connection.</p>
                     <a href="" class="btn btn-secondary font-weight-bold py-2 px-4 mt-2">Learn More</a>
                 </div>
                 <div class="col-lg-4 py-5 py-lg-0" style="min-height: 500px;">
@@ -125,10 +118,11 @@
                 </div>
                 <div class="col-lg-4 py-0 py-lg-5">
                     <h1 class="mb-3">Our Vision</h1>
-                    <p>Invidunt lorem justo sanctus clita. Erat lorem labore ea, justo dolor lorem ipsum ut sed eos, ipsum et dolor kasd sit ea justo. Erat justo sed sed diam. Ea et erat ut sed diam sea ipsum est dolor</p>
-                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</h5>
-                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</h5>
-                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</h5>
+                    <p>Our vision is to become a trusted and loved destination for food lovers by delivering quality, taste, and satisfaction in every order.</p>
+                    <p>We aim to:</p>
+                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Serve fresh, hygienic, and flavorful food consistently</h5>
+                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Provide a convenient and enjoyable ordering experience</h5>
+                    <h5 class="mb-3"><i class="fa fa-check text-primary mr-3"></i>Build lasting relationships with our customers through trust and quality</h5>
                     <a href="" class="btn btn-primary font-weight-bold py-2 px-4 mt-2">Learn More</a>
                 </div>
             </div>
@@ -152,7 +146,7 @@
         <div class="container">
             <div class="section-title">
                 <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Our Services</h4>
-                <h1 class="display-4">Fresh & Organic Beans</h1>
+                <h1 class="display-4">Fresh & Delicious Food</h1>
             </div>
             <div class="row">
                 <div class="col-lg-6 mb-5">
@@ -246,9 +240,12 @@
                     Login
                 </button>
                 {% load socialaccount %}
-<a href="{% provider_login_url 'google' %}">
-  Continue with Google
+
+<a href="{% provider_login_url 'google' %}" class="google-btn">
+    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+    <span>Continue with Google</span>
 </a>
+
                 <div class="input-group-append">
                         <a href="{% url 'register' %}" class="btn btn-primary font-weight-bold px-4">Sign Up</a>
                     </div>
@@ -258,204 +255,6 @@
     </div>
     <!-- Offer End -->
 
-
-    <!-- Menu Start -->
-    <div class="container-fluid pt-5">
-        <div class="container">
-            <div class="section-title">
-                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Menu & Pricing</h4>
-                <h1 class="display-4">Competitive Pricing</h1>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <h1 class="mb-5">Hot Coffee</h1>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-1.jpg' %}" alt="">
-                            <h5 class="menu-price">$5</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Black Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-2.jpg' %}" alt="">
-                            <h5 class="menu-price">$7</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Chocolete Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-3.jpg' %}" alt="">
-                            <h5 class="menu-price">$9</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Coffee With Milk</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <h1 class="mb-5">Cold Coffee</h1>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-1.jpg' %}" alt="">
-                            <h5 class="menu-price">$5</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Black Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-2.jpg' %}" alt="">
-                            <h5 class="menu-price">$7</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Chocolete Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-3.jpg' %}" alt="">
-                            <h5 class="menu-price">$9</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Coffee With Milk</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Menu End -->
-
-
-    <!-- Reservation Start -->
-    <div class="container-fluid my-5">
-        <div class="container">
-            <div class="reservation position-relative overlay-top overlay-bottom">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 my-5 my-lg-0">
-                        <div class="p-5">
-                            <div class="mb-4">
-                                <h1 class="display-3 text-primary">30% OFF</h1>
-                                <h1 class="text-white">For Online Reservation</h1>
-                            </div>
-                            <p class="text-white">Lorem justo clita erat lorem labore ea, justo dolor lorem ipsum ut sed eos,
-                                ipsum et dolor kasd sit ea justo. Erat justo sed sed diam. Ea et erat ut sed diam sea</p>
-                            <ul class="list-inline text-white m-0">
-                                <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</li>
-                                <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</li>
-                                <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Lorem ipsum dolor sit amet</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="text-center p-5" style="background: rgba(51, 33, 29, .8);">
-                            <h1 class="text-white mb-4 mt-5">Book Your Table</h1>
-                            <form class="mb-5">
-                                <div class="form-group">
-                                    <input type="text" class="form-control bg-transparent border-primary p-4" placeholder="Name"
-                                        required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control bg-transparent border-primary p-4" placeholder="Email"
-                                        required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <div class="date" id="date" data-target-input="nearest">
-                                        <input type="text" class="form-control bg-transparent border-primary p-4 datetimepicker-input" placeholder="Date" data-target="#date" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="time" id="time" data-target-input="nearest">
-                                        <input type="text" class="form-control bg-transparent border-primary p-4 datetimepicker-input" placeholder="Time" data-target="#time" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <select class="custom-select bg-transparent border-primary px-4" style="height: 49px;">
-                                        <option selected>Person</option>
-                                        <option value="1">Person 1</option>
-                                        <option value="2">Person 2</option>
-                                        <option value="3">Person 3</option>
-                                        <option value="3">Person 4</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <button class="btn btn-primary btn-block font-weight-bold py-3" type="submit">Book Now</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Reservation End -->
-
-
-    <!-- Testimonial Start -->
-    <div class="container-fluid py-5">
-        <div class="container">
-            <div class="section-title">
-                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Testimonial</h4>
-                <h1 class="display-4">Our Clients Say</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-1.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-2.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-3.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-4.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
 
 <h2 class="text-center mt-5">Customer Reviews</h2>
 
@@ -508,13 +307,13 @@
         <div class="row mx-0 pt-5 px-sm-3 px-lg-5 mt-4">
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Get In Touch</h4>
-                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>solapur-dharashiv highway, near GPO, Dharashiv</p>
                 <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                <p class="m-0"><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <p class="m-0"><i class="fa fa-envelope mr-2"></i>spjunction@spjunction.com</p>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Follow Us</h4>
-                <p>Amet elitr vero magna sed ipsum sit kasd sea elitr lorem rebum</p>
+                <p>follow Spice Junction on below social media platforms</p>
                 <div class="d-flex justify-content-start">
                     <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
@@ -525,28 +324,17 @@
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Open Hours</h4>
                 <div>
-                    <h6 class="text-white text-uppercase">Monday - Friday</h6>
-                    <p>8.00 AM - 8.00 PM</p>
-                    <h6 class="text-white text-uppercase">Saturday - Sunday</h6>
-                    <p>2.00 PM - 8.00 PM</p>
+                    <h6 class="text-white text-uppercase">Monday - Sunday</h6>
+                    <p>9.00 AM - 11.00 PM</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-white text-uppercase mb-4" style="letter-spacing: 3px;">Newsletter</h4>
-                <p>Amet elitr vero magna sed ipsum sit kasd sea elitr lorem rebum</p>
-                <div class="w-100">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-light" style="padding: 25px;" placeholder="Your Email">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary font-weight-bold px-3">Sign Up</button>
-                        </div>
-                    </div>
-                </div>
+                <p>Welcome to Spice Junction, your go-to destination for delicious meals</p>
             </div>
         </div>
         <div class="container-fluid text-center text-white border-top mt-4 py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
-            <p class="mb-2 text-white">Copyright &copy; <a class="font-weight-bold" href="#">Domain</a>. All Rights Reserved.</a></p>
-            <p class="m-0 text-white">Designed by <a class="font-weight-bold" href="https://htmlcodex.com">HTML Codex</a> Distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a></a></p>
+            <p class="mb-2 text-white">Copyright &copy; <a class="font-weight-bold" href="#">spicejunction</a>. All Rights Reserved.</a></p>
         </div>
     </div>
     <!-- Footer End -->

@@ -9719,3 +9719,131 @@ h6,
     color: #fff;
     font-size: 20px;
 }
+.cart-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.cart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.cart-img img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.cart-details {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.cart-details h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.desc {
+    font-size: 13px;
+    color: #777;
+    margin: 5px 0;
+}
+
+.cart-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity button {
+    border: none;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.quantity button:hover {
+    background: #ddd;
+}
+
+.empty-cart {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 50px;
+}
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: 260px;
+    padding: 12px;
+    margin: 30px auto;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.google-btn:hover {
+    background: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.google-btn:active {
+    transform: scale(0.97);
+}
+
+.login-card {
+    max-width: 350px;
+    margin: 80px auto;
+    padding: 30px;
+    text-align: center;
+
+    background: #fff;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}

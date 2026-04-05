@@ -100,9 +100,7 @@ document.addEventListener("click", function (e) {
   if (e.target.classList.contains("add-to-cart-btn")) {
 
     const foodId = e.target.dataset.foodId;
-    const csrfToken = document
-      .querySelector('meta[name="csrf-token"]')
-      .getAttribute("content");
+    const csrfToken = document.getElementById("csrfToken").value;
 
     fetch("/ajax/add-to-cart/", {
       method: "POST",
@@ -114,8 +112,10 @@ document.addEventListener("click", function (e) {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data); 
 
       if (data.success) {
+        document.getElementById("cartCount").innerText = data.cart_count;
         const btn = e.target;
         btn.innerText = "Added ✓";
         btn.classList.remove("btn-success");
