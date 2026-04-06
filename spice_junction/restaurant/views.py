@@ -117,9 +117,20 @@ def get_user_cart(user):
     cart, created = Cart.objects.get_or_create(user=user)
     return cart
 
-@login_required
+# @login_required
+from django.http import JsonResponse
+
 def ajax_add_to_cart(request):
+
+    # 🔥 MUST be first
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "success": False,
+            "error": "login_required"
+        }, status=401)
+
     if request.method == "POST":
+
         food_id = request.POST.get("food_id")
 
         food = get_object_or_404(Food, id=food_id)
@@ -133,20 +144,19 @@ def ajax_add_to_cart(request):
         if not created:
             cart_item.quantity += 1
         cart_item.save()
+
         cart_count = sum(item.quantity for item in cart.items.all())
-        print(f"cart ---{cart_count}")
+
         return JsonResponse({
             "success": True,
             "food_id": food.id,
             "quantity": cart_item.quantity,
-            "cart_count":cart_count
+            "cart_count": cart_count
         })
 
     return JsonResponse({
-        "success": True,
-        "cart_count": cart_count
-        })
-
+        "success": False
+    })
 
 @login_required
 def cart_detail(request):

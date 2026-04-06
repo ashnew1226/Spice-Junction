@@ -29,16 +29,18 @@ class Cart(models.Model):
     
 class CartItem(models.Model):
     cart = models.ForeignKey(
-        Cart,
-        related_name='items',
-        on_delete=models.CASCADE
+        Cart,on_delete=models.CASCADE,
+        related_name='items'
     )
     food = models.ForeignKey(
         'Food',
         on_delete=models.CASCADE
     )
     quantity = models.PositiveIntegerField(default=1)
-
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['cart', 'food'], name='unique_cart_food')
+        ]
     def __str__(self):
         return f"{self.food.name} ({self.quantity})"
 

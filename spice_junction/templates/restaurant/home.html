@@ -52,7 +52,7 @@
                 {% else %}
                     <!-- LOGIN FORM HERE -->
                 {% endif %}
-                <a class="btn btn-outline-dark position-relative">
+                <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark position-relative">
                     <i class="fas fa-shopping-cart"></i>
                     <span id="cartCount"
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -361,7 +361,6 @@
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/foods.js' %}"></script>
-    <script src="{% static 'js/cart.js' %}"></script>
 
     <script>
 document.addEventListener("DOMContentLoaded", function () {
