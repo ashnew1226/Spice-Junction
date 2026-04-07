@@ -11,5 +11,10 @@ urlpatterns = [
     path('logout/', views.custom_logout, name='logout'),
     path('register/', views.register_user, name='register'),
     path('cart-detail/', views.cart_detail, name='cart_detail'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('payment/<int:order_id>/', views.payment, name='payment'),
+    path('payment-success/', views.payment_success, name='payment_success'),
+    path('ajax/remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),
+    path('ajax/update-cart/', views.update_cart_quantity, name='update_cart'),
 
 ]

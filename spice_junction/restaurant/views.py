@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Food, Review, Category, Cart, CartItem
+
+from django.conf import settings
+from .models import Food, Review, Category, Cart, CartItem, Order, OrderItem
 from .forms import ReviewForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -7,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import razorpay
 
 def home(request):
     popular_dishes = Food.objects.filter(is_popular=True)
@@ -168,3 +171,123 @@ def cart_detail(request):
         'items': items,
         'name':name
     })
+
+@login_required
+def remove_from_cart(request):
+    if request.method == "POST":
+        item_id = request.POST.get("item_id")
+
+        cart = get_user_cart(request.user)
+        item = get_object_or_404(CartItem, id=item_id, cart=cart)
+
+        item.delete()
+
+        cart_count = sum(i.quantity for i in cart.items.all())
+
+        return JsonResponse({
+            "success": True,
+            "cart_count": cart_count
+        })
+
+    return JsonResponse({"success": False})
+@login_required
+def update_cart_quantity(request):
+    if request.method == "POST":
+        item_id = request.POST.get("item_id")
+        action = request.POST.get("action")
+
+        cart = get_user_cart(request.user)
+        item = get_object_or_404(CartItem, id=item_id, cart=cart)
+
+        if action == "increase":
+            item.quantity += 1
+            item.save()
+
+        elif action == "decrease":
+            if item.quantity > 1:
+                item.quantity -= 1
+                item.save()
+            else:
+                item.delete()
+
+        cart_count = sum(i.quantity for i in cart.items.all())
+
+        return JsonResponse({
+            "success": True,
+            "quantity": item.quantity if item.id else 0,
+            "cart_count": cart_count
+        })
+
+    return JsonResponse({"success": False})
+@login_required
+def checkout(request):
+    cart = get_user_cart(request.user)
+    items = cart.items.all()
+
+    if not items:
+        return redirect('home')
+
+    total = sum(item.food.price * item.quantity for item in items)
+
+    order = Order.objects.create(
+        user=request.user,
+        total_amount=total
+    )
+
+    for item in items:
+        OrderItem.objects.create(
+            order=order,
+            food=item.food,
+            quantity=item.quantity,
+            price=item.food.price
+        )
+
+    items.delete()
+
+    return redirect('payment', order_id=order.id)
+
+@login_required
+def payment(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    client = razorpay.Client(auth=(
+        settings.RAZORPAY_KEY_ID,
+        settings.RAZORPAY_KEY_SECRET
+    ))
+
+    # ✅ Convert to paisa (integer)
+    amount_paisa = int(float(order.total_amount) * 100)
+
+    payment_data = {
+        "amount": amount_paisa,
+        "currency": "INR",
+        "receipt": f"order_{order.id}"
+    }
+
+    razorpay_order = client.order.create(data=payment_data)
+
+    # ✅ Save Razorpay order id
+    order.order_id = razorpay_order['id']
+    order.save()
+
+    return render(request, "restaurant/payment.html", {
+        "order": order,
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "amount": amount_paisa,                 # for Razorpay (JS)
+        "amount_rupees": order.total_amount,    # for UI display ✅
+        "razorpay_order_id": razorpay_order['id'],
+    })
+def payment_success(request):
+    payment_id = request.GET.get("payment_id")
+    order_id = request.GET.get("order_id")
+
+    order = Order.objects.filter(order_id=order_id).first()
+
+    if not order:
+        return redirect('home')
+
+    order.payment_id = payment_id
+    order.status = "PAID"
+    order.save()
+
+    return render(request, "restaurant/payment-success.html",{'order':order})
