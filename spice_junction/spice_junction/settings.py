@@ -84,8 +84,8 @@ DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'spice_junction_db',
-        'USER': 'ashish',
-        'PASSWORD': 'Ashish@123',
+        'USER': 'root',
+        'PASSWORD': 'pratiksha@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }

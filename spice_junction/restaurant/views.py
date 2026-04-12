@@ -66,7 +66,7 @@ def custom_login(request):
         else:
             messages.error(request, 'Invalid credentials')
 
-    return redirect('/')
+    return render(request, 'registration/login.html')
 
 def custom_logout(request):
     logout(request)
@@ -291,3 +291,7 @@ def payment_success(request):
     order.save()
 
     return render(request, "restaurant/payment-success.html",{'order':order})
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'restaurant/my_orders.html', {'orders': orders})

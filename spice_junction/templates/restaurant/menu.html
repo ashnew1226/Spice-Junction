@@ -10,7 +10,7 @@
     <meta content="Free Website Template" name="description">
 
     <!-- Favicon -->
-    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+    <link href="{% static 'img/Spice-Junction-favicon.png' %}" rel="icon">
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -44,10 +44,9 @@
                     <a href="{% url 'home' %}" class="nav-item nav-link" >About</a>
                     <a href="{% url 'home' %}" class="nav-item nav-link">Service</a>
                     <a href="{% url 'home' %}" class="nav-item nav-link" >Menu</a>
-                    <a href="{% url 'home' %}" class="nav-item nav-link" >Contact</a>
                 </div>
                     {% if user.is_authenticated %}
-                    <p class="text-success">Welcome, {{ user.username }}</p>
+                    <p class="text-success" style="margin: 9px 5px 0px 0px;">Welcome, {{ user.username }}</p>
                     <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
                 {% else %}
                     <!-- LOGIN FORM HERE -->
@@ -156,3 +155,4 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+<script src="{% static 'js/foods.js' %}"></script>
