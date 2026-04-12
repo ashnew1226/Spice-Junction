@@ -1,53 +1,68 @@
+{% load static %}
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - Spice Junction</title>
+    <title>Signup - Spice Junction</title>
 
-    <!-- Bootstrap (optional but recommended) -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        html, body {
+            height: 100%;
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Navbar fix */
+        /* NAVBAR */
         .nav-bar {
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1050;
+            height: 80px;
         }
 
-        /* Login container */
+        /* MAIN CONTAINER */
         .login-container {
-            height: calc(100vh - 90px);
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding-top: 80px; /* prevents overlap */
+            box-sizing: border-box;
         }
 
+        /* BOX */
         .login-box {
             background: white;
             padding: 40px;
             border-radius: 12px;
-            width: 350px;
+            width: 360px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-radius: 6px;
             border: 1px solid #ccc;
         }
@@ -67,20 +82,10 @@
             background: #e66a50;
         }
 
-        .error {
-            color: red;
+        .alert {
             font-size: 14px;
             margin-bottom: 10px;
-        }
-
-        .extra {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .extra a {
-            text-decoration: none;
-            color: #ff7e5f;
+            padding: 8px;
         }
 
         .google-btn {
@@ -89,9 +94,9 @@
             justify-content: center;
             gap: 10px;
 
-            width: 260px;
+            width: 100%;
             padding: 12px;
-            margin: 30px auto;
+            margin-top: 20px;
 
             background: #fff;
             border: 1px solid #ddd;
@@ -105,7 +110,7 @@
             cursor: pointer;
 
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
         .google-btn img {
@@ -116,31 +121,30 @@
         .google-btn:hover {
             background: #f8f8f8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
         }
 
-        .google-btn:active {
-            transform: scale(0.97);
+        .extra-text {
+            text-align: center;
+            margin-top: 15px;
         }
-
     </style>
 </head>
 
 <body>
 
-<!-- ✅ NAVBAR -->
+<!-- NAVBAR -->
 <div class="container-fluid p-0 nav-bar bg-dark">
     <nav class="navbar navbar-expand-lg navbar-dark py-3">
-        <a href="{% url 'home' %}" class="navbar-brand px-lg-4 m-0">
+        <a href="{% url 'home' %}" class="navbar-brand px-lg-4">
             <h3 class="m-0 text-uppercase text-white">SPICE JUNCTION</h3>
         </a>
 
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-            <div class="navbar-nav ml-auto p-2">
+            <div class="navbar-nav ml-auto">
 
                 <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
                 <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
@@ -165,41 +169,54 @@
     </nav>
 </div>
 
-<!-- ✅ LOGIN FORM -->
+<!-- SIGNUP -->
 <div class="login-container">
     <div class="login-box">
 
-        <h2>Login</h2>
+        <h2>Create Account</h2>
 
-        {% if form.errors %}
-            <div class="error">Invalid email or password</div>
-        {% endif %}
+        <!-- ERRORS -->
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
 
-        <form method="post" action="{% url 'account_login' %}">
-    {% csrf_token %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
 
-    <input type="text" name="login" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
+        <!-- FORM -->
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
 
-    <button type="submit">Login</button>
-</form>
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email" required>
 
-        <div class="extra">
-            <p>Don't have an account? 
-                <a href="{% url 'account_signup' %}">Register</a>
-            </p>
+            <label>Password</label>
+            <input type="password" name="password1" placeholder="Create password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="password2" placeholder="Re-enter password" required>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="extra-text">
+            Already have an account?
+            <a href="{% url 'account_login' %}">Login</a>
         </div>
-        {% load socialaccount %}
 
-<a href="{% provider_login_url 'google' %}" class="google-btn">
-    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
-    <span>Continue with Google</span>
-</a>
+        <!-- GOOGLE LOGIN -->
+        <a href="{% provider_login_url 'google' %}" class="google-btn">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+            <span>Continue with Google</span>
+        </a>
 
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 

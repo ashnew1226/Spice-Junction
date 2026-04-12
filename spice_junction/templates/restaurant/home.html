@@ -52,7 +52,7 @@
                     <p class="text-success" style="margin: 9px 5px 0px 0px;">Welcome, {{ name }}</p>
                     <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
                     {% else %}
-                    <a href="#login" class="nav-item nav-link" style="font-size: 14px; color:#fff">Login</a>
+                    <a href="{% url 'account_login' %}" class="nav-item nav-link" style="font-size: 14px; color:#fff">Login</a>
                     {% endif %}
                     <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark position-relative">
                         <i class="fas fa-shopping-cart"></i>
@@ -202,59 +202,6 @@
         </div>
     </div>
     <!-- Service End -->
-
-
-    <!-- Offer Start -->
-    <div class="offer container-fluid my-5 py-5 text-center position-relative overlay-top overlay-bottom">
-        <div class="container col-md-6 py-5" id="login">
-            {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            {% endif %}
-
-
-            <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <label class="form-label custom-white">Email address</label>
-                    <input type="text"
-                        name="username"
-                        class="form-control"
-                        placeholder="Enter username or email"
-                        required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label custom-white">Password</label>
-                    <input type="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Password"
-                        required>
-                </div>
-
-                <button type="submit" class="btn btn-primary font-weight-bold px-4">
-                    Login
-                </button>
-                {% load socialaccount %}
-
-<a href="{% provider_login_url 'google' %}" class="google-btn">
-    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
-    <span>Continue with Google</span>
-</a>
-
-                <div class="input-group-append">
-                        <a href="{% url 'register' %}" class="btn btn-primary font-weight-bold px-4">Sign Up</a>
-                    </div>
-            </form>
-
-        </div>
-    </div>
-    <!-- Offer End -->
 
 
 <h2 class="text-center mt-5">Customer Reviews</h2>

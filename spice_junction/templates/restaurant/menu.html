@@ -32,7 +32,7 @@
      <!-- Navbar Start -->
     <div class="container-fluid p-0 nav-bar">
         <nav class="navbar navbar-expand-lg bg-none py-3">
-            <a href="index.html" class="navbar-brand  px-lg-4 m-0">
+            <a href="{% url 'home' %}" class="navbar-brand  px-lg-4 m-0">
                 <h1 class="m-0 display-4 text-uppercase text-dark">SPICE JUNCTION</h1>
             </a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -42,8 +42,8 @@
                 <div class="navbar-nav ml-auto p-4">
                     <a href="{% url 'home' %}" class="nav-item nav-link menu-nav active" >Home</a>
                     <a href="{% url 'home' %}" class="nav-item nav-link" >About</a>
-                    <a href="{% url 'home' %}" class="nav-item nav-link">Service</a>
-                    <a href="{% url 'home' %}" class="nav-item nav-link" >Menu</a>
+                    <a href="{% url 'home' %}" class="nav-item nav-link">Services</a>
+                    <a href="{% url 'menu' %}" class="nav-item nav-link active" >Menu</a>
                 </div>
                     {% if user.is_authenticated %}
                     <p class="text-success" style="margin: 9px 5px 0px 0px;">Welcome, {{ user.username }}</p>
@@ -51,14 +51,14 @@
                 {% else %}
                     <!-- LOGIN FORM HERE -->
                 {% endif %}
-                <a class="btn btn-outline-dark position-relative">
+                <a href="{% url 'cart_detail' %}" class="btn btn-outline-dark position-relative">
                     <i class="fas fa-shopping-cart"></i>
                     <span id="cartCount"
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    0
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{cart_count}}
                     </span>
                 </a>
-            </div>
+        </div>
         </nav>
     </div>
     <!-- Navbar End -->

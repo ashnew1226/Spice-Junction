@@ -115,7 +115,7 @@ document.addEventListener("click", function (e) {
     })
     .then(response => {
         if (response.status === 401) {
-          window.location.href = "/accounts/login/";
+          window.location.href = "/accounts/login/?next=" + window.location.pathname;
           return;
         }
         return response.json();

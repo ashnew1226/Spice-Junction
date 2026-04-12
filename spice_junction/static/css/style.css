@@ -9796,46 +9796,6 @@ h6,
     color: #888;
     margin-top: 50px;
 }
-.google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    width: 260px;
-    padding: 12px;
-    margin: 30px auto;
-
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-
-    font-size: 15px;
-    font-weight: 500;
-    color: #444;
-
-    text-decoration: none;
-    cursor: pointer;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-}
-
-.google-btn img {
-    width: 20px;
-    height: 20px;
-}
-
-.google-btn:hover {
-    background: #f8f8f8;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
-
-.google-btn:active {
-    transform: scale(0.97);
-}
-
 .login-card {
     max-width: 350px;
     margin: 80px auto;

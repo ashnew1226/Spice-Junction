@@ -55,51 +55,18 @@ def add_review(request):
         })
     return JsonResponse({'success': False, 'errors': form.errors})
 
-def custom_login(request):
-    if request.method == 'POST':
-        identifier = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=identifier, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/')  # home page
-        else:
-            messages.error(request, 'Invalid credentials')
-
-    return render(request, 'registration/login.html')
-
 def custom_logout(request):
     logout(request)
     return redirect('/')
 
-def register_user(request):
-    if request.method == 'POST':
-        identifier = request.POST.get('identifier')  # email or phone
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
-
-        if password != confirm_password:
-            messages.error(request, 'Passwords do not match')
-            return redirect('/')
-
-        if User.objects.filter(username=identifier).exists():
-            messages.error(request, 'Account already exists')
-            return redirect('/')
-
-        User.objects.create_user(
-            username=identifier,   # email OR phone
-            password=password
-        )
-
-        messages.success(request, 'Account created successfully. Please login.')
-        return redirect('/')
-
-    return render(request, 'restaurant/register.html')
-
 def menu_page(request):
     foods = Food.objects.all()
+    cart_count = 0
+    if request.user.is_authenticated:
+        cart = get_user_cart(request.user)
+        cart_count = sum(item.quantity for item in cart.items.all()) 
     categories = Category.objects.all()
-    return render(request, 'restaurant/menu.html', {'categories': categories})
+    return render(request, 'restaurant/menu.html', {'categories': categories,'cart_count':cart_count})
 
 def foods_by_category(request, category_id):
     foods = Food.objects.filter(category_id=category_id)
@@ -121,8 +88,6 @@ def get_user_cart(user):
     return cart
 
 # @login_required
-from django.http import JsonResponse
-
 def ajax_add_to_cart(request):
 
     # 🔥 MUST be first
@@ -164,12 +129,14 @@ def ajax_add_to_cart(request):
 @login_required
 def cart_detail(request):
     cart = Cart.objects.filter(user=request.user).first()
+    cart_count = sum(item.quantity for item in cart.items.all()) 
     items = cart.items.all() if cart else []
     name = request.user.username.split("@")[0]
     return render(request, 'restaurant/cart_detail.html', {
         'cart': cart,
         'items': items,
-        'name':name
+        'name':name,
+        'cart_count':cart_count
     })
 
 @login_required
@@ -293,5 +260,8 @@ def payment_success(request):
     return render(request, "restaurant/payment-success.html",{'order':order})
 @login_required
 def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'restaurant/my_orders.html', {'orders': orders})
+    name = request.user.username.split("@")[0]
+    cart = Cart.objects.filter(user=request.user).first()
+    cart_count = sum(item.quantity for item in cart.items.all()) 
+    orders = Order.objects.filter(user=request.user,status='Paid').order_by('-created_at')
+    return render(request, 'restaurant/my_orders.html', {'orders': orders,'cart_count':cart_count,'name':name})
